@@ -1,15 +1,13 @@
 {
-  customModules,
   name,
   pkgs,
   lib,
   config,
-  osConfig,
   ...
 }:
 
 let
-  cfg = config.homeManagerConfig.hyprland;
+  cfg = config.specialConfig.hyprland;
 
   startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
     ${pkgs.waybar}/bin/waybar &
@@ -27,8 +25,8 @@ let
   rgb = color: "rgb(${color})";
   rgba = color: alpha: "rgba(${color}${alpha})";
 in
-customModules.ifEnabledInNixos {
-  options.homeManagerConfig.${name} = {
+{
+  options.specialConfig.hyprland = {
     monitors = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ", preferred, auto, 1" ];
@@ -64,7 +62,7 @@ customModules.ifEnabledInNixos {
   ];
 
   config = {
-    homeManagerConfig.hyprlock.enable = true;
+    specialConfig.hyprlock.enable = true;
     wayland.windowManager.hyprland = {
       enable = true;
 
@@ -84,8 +82,8 @@ customModules.ifEnabledInNixos {
         cursor.no_hardware_cursors = cfg.no-hardware-cursor;
 
         general = {
-          gaps_in = "4";
-          gaps_out = "16";
+          gaps_in = "2";
+          gaps_out = "4";
 
           border_size = "2";
 
@@ -96,7 +94,7 @@ customModules.ifEnabledInNixos {
           ];
           "col.inactive_border" = rgb base03;
 
-          resize_on_border = "false";
+          resize_on_border = "true";
           allow_tearing = "false";
           layout = "dwindle";
         };
